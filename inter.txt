@@ -1,0 +1,90 @@
+1000	    NEWQ	START	1000
+
+1000	   FIRST	STL	RETADR
+
+1003	   CLOOP	JSUB	RDREC
+
+1006	        	LDA	LENGTH
+
+1009	         	COMP	ZERO
+
+100c	        	JEQ	ENDFIL
+
+100f	        	JSUB	WRREC
+
+1012	           	J	CLOOP
+
+1015	     ENDFIL	LDA	EOF
+
+1018	        	STA	BUFFER
+
+101b	         	LDA	THREE
+
+101e	        	STA	LENGTH
+
+1021	        	JSUB	WRREC
+
+1024	        	LDL	RETADR
+
+1027	              	RSUB
+
+102a	    EOF	BYTE	C'EOF'
+
+1030	       THREE	WORD	3
+
+1033	        ZERO	WORD	0
+
+1036	      RETADR	RESW	1
+
+1039	      LENGTH	RESW	1
+
+103c	   BUFFER	RESB	4096
+
+203c	     RDREC	LDX	ZERO
+
+203f	          	LDA	ZERO
+
+2042	     RLOOP	TD	INPUT
+
+2045	         	JEQ	RLOOP
+
+2048	          	RD	INPUT
+
+204b	         	COMP	ZERO
+
+204e	          	JEQ	EXIT
+
+2051	     	STCH	BUFFER,X
+
+2054	        	TIX	MAXLEN
+
+2057	         	JLT	RLOOP
+
+205a	    EXIT	STX	LENGTH
+
+205d	              	RSUB
+
+2060	   INPUT	BYTE	X'F1'
+
+2061	   MAXLEN	WORD	4096
+
+2064	     WRREC	LDX	ZERO
+
+2067	    WLOOP	TD	OUTPUT
+
+206a	         	JEQ	WLOOP
+
+206d	     	LDCH	BUFFER,X
+
+2070	         	WD	OUTPUT
+
+2073	        	TIX	LENGTH
+
+2076	         	JLT	WLOOP
+
+2079	              	RSUB
+
+207c	  OUTPUT	BYTE	X'05'
+
+   0	         	END	FIRST
+

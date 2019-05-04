@@ -1,0 +1,148 @@
+
+1000    FIRST	STL	RETADR
+					 141036
+
+
+1003    CLOOP	JSUB	RDREC
+					 48203c
+
+
+1006         	LDA	LENGTH
+					 001039
+
+
+1009          	COMP	ZERO
+					 281033
+
+
+100c         	JEQ	ENDFIL
+					 301015
+
+
+100f         	JSUB	WRREC
+					 482064
+
+
+1012            	J	CLOOP
+					 3c1003
+
+
+1015      ENDFIL	LDA	EOF
+					 00102a
+
+
+1018         	STA	BUFFER
+					 0c103c
+
+
+101b          	LDA	THREE
+					 001030
+
+
+101e         	STA	LENGTH
+					 0c1039
+
+
+1021         	JSUB	WRREC
+					 482064
+
+
+1024         	LDL	RETADR
+					 081036
+
+
+1027               	RSUB
+					 4c0000
+
+
+1030        THREE	WORD	3
+					 000003
+
+
+1033         ZERO	WORD	0
+					 000000
+
+
+203c      RDREC	LDX	ZERO
+					 041033
+
+
+203f           	LDA	ZERO
+					 001033
+
+
+2042      RLOOP	TD	INPUT
+					 e02060
+
+
+2045          	JEQ	RLOOP
+					 302042
+
+
+2048           	RD	INPUT
+					 d82060
+
+
+204b          	COMP	ZERO
+					 281033
+
+
+204e           	JEQ	EXIT
+					 30205a
+
+
+2051      	STCH	BUFFER,X
+					 54903c
+
+
+2054         	TIX	MAXLEN
+					 2c2061
+
+
+2057          	JLT	RLOOP
+					 382042
+
+
+205a     EXIT	STX	LENGTH
+					 101039
+
+
+205d               	RSUB
+					 4c0000
+
+
+2061    MAXLEN	WORD	4096
+					 001000
+
+
+2064      WRREC	LDX	ZERO
+					 041033
+
+
+2067     WLOOP	TD	OUTPUT
+					 e0207c
+
+
+206a          	JEQ	WLOOP
+					 302067
+
+
+206d      	LDCH	BUFFER,X
+					 50903c
+
+
+2070          	WD	OUTPUT
+					 dc207c
+
+
+2073         	TIX	LENGTH
+					 2c1039
+
+
+2076          	JLT	WLOOP
+					 382067
+
+
+2079               	RSUB
+					 4c0000
+
